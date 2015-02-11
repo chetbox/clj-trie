@@ -9,8 +9,8 @@
    (if (empty? remaining-value)
      (TrieNode. value (:children tr))
      (TrieNode. (:value tr) (update-in (:children tr)
-                            [(first remaining-value)]
-                            #(insert-value % (rest remaining-value) value))))))
+                                       [(first remaining-value)]
+                                       #(insert-value % (rest remaining-value) value))))))
 
 (defn trie
   [values]
