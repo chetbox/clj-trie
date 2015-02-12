@@ -21,9 +21,7 @@
 (defn all-values
   [tr]
   (concat
-   (if (:value tr)
-     [(:value tr)]
-     [])
+   (if-some [val (:value tr)] [val] [])
    (mapcat all-values (vals (:children tr)))))
 
 (defn- find-node
@@ -31,12 +29,12 @@
   (if (empty? value)
     tr
     (find-node (get (:children tr)
-                     (first value))
-                (rest value))))
+                    (first value))
+               (rest value))))
 
 (defn has-value?
   [tr value]
-  (:value (find-node tr value)))
+  (some? (:value (find-node tr value))))
 
 (defn prefix-matches
   [tr prefix]
