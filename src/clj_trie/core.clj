@@ -3,14 +3,14 @@
 (defrecord TrieNode [value children])
 
 (defn insert-value
-  ([tr value]
-   (insert-value tr value value))
-  ([tr remaining-value value]
+  ([root value]
+   (insert-value root value value))
+  ([root remaining-value value]
    (if (empty? remaining-value)
-     (TrieNode. value (:children tr))
-     (TrieNode. (:value tr) (update-in (:children tr)
-                                       [(first remaining-value)]
-                                       #(insert-value % (rest remaining-value) value))))))
+     (TrieNode. value (:children root))
+     (TrieNode. (:value root) (update-in (:children root)
+                                         [(first remaining-value)]
+                                         #(insert-value % (rest remaining-value) value))))))
 
 (defn trie
   [values]
@@ -19,25 +19,23 @@
           values))
 
 (defn all-values
-  [tr]
+  [root]
   (concat
-   (if (:value tr)
-     [(:value tr)]
-     [])
-   (mapcat all-values (vals (:children tr)))))
+   (if-some [v (:value root)] [v] [])
+   (mapcat all-values (vals (:children root)))))
 
 (defn- find-node
-  [tr value]
+  [root value]
   (if (empty? value)
-    tr
-    (find-node (get (:children tr)
-                     (first value))
-                (rest value))))
+    root
+    (find-node (get (:children root)
+                    (first value))
+               (rest value))))
 
 (defn has-value?
-  [tr value]
-  (:value (find-node tr value)))
+  [root value]
+  (some? (:value (find-node root value))))
 
 (defn prefix-matches
-  [tr prefix]
-  (all-values (find-node tr prefix)))
+  [root prefix]
+  (all-values (find-node root prefix)))
