@@ -2,7 +2,7 @@
 
 A Clojure library designed to for prefix-matching strings, but will work with other sequences too.
 
-![Build status](https://travis-ci.org/chetbox/clj-trie.svg)
+[![Build status](https://travis-ci.org/chetbox/clj-trie.svg)](https://travis-ci.org/chetbox/clj-trie)
 
 ## Usage
 
